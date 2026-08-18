@@ -13,10 +13,6 @@ OCR tools and models benchmarking framework in the context of AIL-project.
 
 KIE is not mandatory in our operating context.
 
-## Open questions/comments
-- Most translation and text generation related metrics compare tools/models output to human produced output
-- Can machine translation and text generation related metrics be used to evaluate the quality of an OCR process ?
-
 ## Evaluation metrics and existing framework
 ### Metrics
 
