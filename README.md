@@ -1,12 +1,12 @@
- OCR Bench
+# OCR Bench
 
 OCR tools and models benchmarking framework in the context of AIL-project.
 
 ## Terminology and capabilities to be considered:
-- Text detection: localizes text regions
-- Text recognition: transcribes those regions into machine-readable text
-- Text spotting: detection and recognition performed together
-- Key Information Extraction (KIE)
+- **Text detection**: localizes text regions
+- **Text recognition**: transcribes those regions into machine-readable text
+- **Text spotting**: detection and recognition performed together
+- **Key Information Extraction (KIE)**
 	- document-understanding task
 	- interprets the text and layout, assigns labels
 	- link a field label to its corresponding value
