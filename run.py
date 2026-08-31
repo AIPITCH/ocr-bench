@@ -9,6 +9,7 @@ import json
 import datetime
 import requests
 from httpx import TimeoutException
+from hashlib import sha256
 
 
 #### parameters
@@ -73,12 +74,13 @@ def get_list_of_files():
     
     # get list of jpeg and png files
     files = [
-        path
+        { 'path': path, 'hash': sha256(path.read_bytes()).hexdigest() }
         for path in samples_path.glob('*')
         if path.is_file() and path.suffix.lower() in image_extensions
     ]
-    files.sort()
-    
+
+    files = sorted(files, key=lambda file: file['path'].name)
+
     if len(files) < 1:
         print("\nNo files to process, exiting...")
         sys.exit(1)
@@ -150,12 +152,16 @@ def main():
     print("\n########")
     print("File(s) to be considered:")
     for i in range(len(files)):
-        print("    [" + str(i) + "] " + files[i].name)
+        print("    [" + str(i) + "] " + files[i]['path'].name + " (SHA256: " + files[i]['hash'] + ")")
     
     if args.dry_run:
         sys.exit(1)
     
-    results["files"] = [str(file) for file in files]
+    results["files"] = [
+        { 'filename': file['path'].name, 'filepath': str(file['path'].parents[0]), 'filehash': file['hash'] }
+        for file in files
+    ]
+
     results["models"] = models
     results["results"] = []
     for model in models:
@@ -165,8 +171,8 @@ def main():
         vram_usage = load_model(model_name, loader)
         print("done")
         for file in files:
-            current_result = {"model": model_name, "vram_usage": vram_usage, "file": file.name}
-            print("Processing " + file.name + " with " + model_name)
+            current_result = {'model': model_name, 'vram_usage': vram_usage, 'file': file['path'].name}
+            print("Processing " + file['path'].name + " with " + model_name)
             
             current_result['status'] = 'ok'
             begin = datetime.datetime.now()
