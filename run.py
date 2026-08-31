@@ -94,7 +94,7 @@ def get_ollama_clients():
     ]
 
 
-def unload_models(model_to_keep,loader):
+def unload_models(model_to_keep, loader):
     # use empty string in model_to_keep to unload all models
     ps = loader.ps()
     already_found = False
@@ -106,15 +106,18 @@ def unload_models(model_to_keep,loader):
             already_found = True
 
 
-def load_model(model_name,loader):
+def load_model(model_name, loader):
     loader.generate(model = model_name, prompt = "")
     ps = loader.ps()
     return ps['models'][0].size_vram
 
 
 def write_results():
-    with open("run_results_" + datetime.datetime.now().strftime('%s') + ".json", "w") as results_file:
+    ts = datetime.datetime.now().strftime('%s')
+    filename = "run_results_" + ts + ".json"
+    with open(filename, "w") as results_file:
         results_file.write(json.dumps(results))
+    print("\nRun results written to " + filename)
 
 
 args = sys.argv[1:]
@@ -133,15 +136,15 @@ def main():
     if args.dry_run:
         print("Dry run mode...")
     
-    models=get_available_models()
+    models = get_available_models()
     print("########")
-    print("Available models:")
+    print("Available model(s):")
     for i in range(len(models)):
         print("    [" + str(i) + "] " + models[i]['name'])
     
-    files=get_list_of_files()
+    files = get_list_of_files()
     print("\n########")
-    print("Files to be considered:")
+    print("File(s) to be considered:")
     for i in range(len(files)):
         print("    [" + str(i) + "] " + files[i].name)
     
@@ -154,8 +157,8 @@ def main():
     for model in models:
         model_name = model['model']
         unload_models(model_name,loader)
-        print("\nLoading " + model_name + " ...")
-        vram_usage=load_model(model_name, loader)
+        sys.stdout.write("\nLoading " + model_name + " ...")
+        vram_usage = load_model(model_name, loader)
         print("done")
         for file in files:
             current_result = {"model": model_name, "vram_usage": vram_usage, "file": file.name}
