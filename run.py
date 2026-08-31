@@ -73,6 +73,7 @@ def get_list_of_files():
         for path in samples_path.glob('*')
         if path.is_file() and path.suffix.lower() in image_extensions
     ]
+    files.sort()
     
     if len(files) < 1:
         print("\nNo files to process, exiting...")
