@@ -48,7 +48,11 @@ image_extensions = ['.png', '.jpg', '.jpeg']
 #### function definitions
 def get_available_models():
     # get list of models
-    response = requests.get(ollama_url + "/api/tags")
+    try:
+        response = requests.get(ollama_url + "/api/tags")
+    except requests.ConnectionError as e:
+        print("Can't connect to Ollama instance!")
+        sys.exit(1)
     
     if response.status_code != 200:
         print("\nCannot get list of models from Ollama, exiting...")
