@@ -13,7 +13,7 @@ from httpx import TimeoutException
 
 #### parameters
 ollama_url = "http://localhost:11434"
-ollama_timeout = 60
+ollama_timeout = 240
 ollama_loader_timeout = 120
 ollama_prompt = 'Reproduce all visible text and special characters exactly as written, preserving line breaks and any tabular structure, without summarizing, translating, or interpreting the content. Prefix watermarked text including special characters with [WATERMARK]'
 samples_dir = "~/git/ocr-bench/samples/"
