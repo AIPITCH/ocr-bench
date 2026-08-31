@@ -184,7 +184,7 @@ def main():
                         {
                             'role': 'user',
                             'content': ollama_prompt,
-                            'images': [file],
+                            'images': [file['path']],
                         }
                     ],
                 )
