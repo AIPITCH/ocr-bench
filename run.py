@@ -15,7 +15,32 @@ from httpx import TimeoutException
 ollama_url = "http://localhost:11434"
 ollama_timeout = 240
 ollama_loader_timeout = 120
-ollama_prompt = 'Reproduce all visible text and special characters exactly as written, preserving line breaks and any tabular structure, without summarizing, translating, or interpreting the content. Prefix watermarked text including special characters with [WATERMARK]'
+ollama_prompt = """
+You're as OCR/STR engine.
+Return ONLY valid JSON. No Markdown and no explanation.
+
+Coordinate system:
+- bbox format: [x_min, y_min, x_max, y_max]
+- coordinates are integers normalized from 0 to 1000
+- origin [0, 0] is the image top-left
+- [1000, 1000] is the image bottom-right
+- each bbox must tightly cover the visible text
+- enforce: 0 <= x_min < x_max <= 1000
+- enforce: 0 <= y_min < y_max <= 1000
+
+Return one object per text line in an array in a wrapping top-level object:
+{
+  "items": [
+    {
+      "id": "line_001",
+      "text": "Reproduce all visible text and special characters exactly as written, preserving line breaks and any tabular structure, without summarizing, translating, or interpreting the content. Prefix watermarked text including special characters with [WATERMARK]",
+      "bbox": [x_min, y_min, x_max, y_max],
+      "confidence": 0.0
+    }
+  ]
+}
+DO NOT PREFIX the answer with the text "json"!
+"""
 samples_dir = "~/git/ocr-bench/samples/"
 image_extensions = ['.png', '.jpg', '.jpeg']
 
