@@ -47,7 +47,7 @@ image_extensions = ['.png', '.jpg', '.jpeg']
 
 
 #### function definitions
-def get_available_models():
+def get_available_models() -> list:
     # get list of models
     try:
         response = requests.get(ollama_url + "/api/tags")
@@ -68,7 +68,7 @@ def get_available_models():
     return models
 
 
-def get_list_of_files():
+def get_list_of_files() -> list:
     samples_path = Path(samples_dir)
     samples_path = samples_path.expanduser()
     
@@ -87,7 +87,7 @@ def get_list_of_files():
     return files
 
 
-def get_ollama_clients():
+def get_ollama_clients() -> list:
     return [
             Client(
                 host = 'http://localhost:11434',
@@ -100,7 +100,7 @@ def get_ollama_clients():
     ]
 
 
-def unload_models(model_to_keep, loader):
+def unload_models(model_to_keep, loader) -> None:
     # use empty string in model_to_keep to unload all models
     ps = loader.ps()
     already_found = False
@@ -112,13 +112,13 @@ def unload_models(model_to_keep, loader):
             already_found = True
 
 
-def load_model(model_name, loader):
+def load_model(model_name, loader) -> int:
     loader.generate(model = model_name, prompt = "")
     ps = loader.ps()
     return ps['models'][0].size_vram
 
 
-def write_results():
+def write_results() -> None:
     ts = datetime.datetime.now().strftime('%s')
     filename = "run_results_" + ts + ".json"
     with open(filename, "w") as results_file:
@@ -137,10 +137,7 @@ args = parser.parse_args()
 chat_client, loader = get_ollama_clients()
 
 results = {}
-def main():
-    
-    if args.dry_run:
-        print("Dry run mode...")
+def main() -> int:
     
     models = get_available_models()
     print("########")
@@ -207,6 +204,8 @@ def main():
     unload_models("", loader)
     
     write_results()
+    return 0
+
 
 if __name__ == '__main__':
     try:
