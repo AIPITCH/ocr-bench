@@ -181,6 +181,9 @@ def main() -> int:
             choices=[model['model'] for model in models],
         ).ask()
         models = [model for model in models if model['model'] in selected_models]
+        if len(models) < 1:
+            print("\nNo models selected, exiting...")
+            sys.exit(1)
 
     if not args.all_files and not args.dry_run:
         selected_files = questionary.checkbox(
@@ -188,6 +191,9 @@ def main() -> int:
             choices=[file['path'].name for file in files],
         ).ask()
         files = [file for file in files if file['path'].name in selected_files]
+        if len(files) < 1:
+            print("\nNo files selected, exiting...")
+            sys.exit(1)
 
     if args.dry_run:
         sys.exit(1)
