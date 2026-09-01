@@ -1,2 +1,4 @@
 ollama
 requests
+nvidia-ml-py
+questionary

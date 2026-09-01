@@ -8,8 +8,10 @@ import argparse
 import json
 import datetime
 import requests
+import questionary
 from httpx import TimeoutException
 from hashlib import sha256
+from pynvml import *
 
 
 #### parameters
@@ -126,12 +128,25 @@ def write_results() -> None:
     print("\nRun results written to " + filename)
 
 
+def pynvml_init() -> None:
+    nvmlInit()
+    print(f"Driver Version: {nvmlSystemGetDriverVersion()}")
+    print("Available device(s):")
+    deviceCount = nvmlDeviceGetCount()
+    for i in range(deviceCount):
+        handle = nvmlDeviceGetHandleByIndex(i)
+        print(f"\tDevice {i} : {nvmlDeviceGetName(handle)}")
+    print()
+
+
 args = sys.argv[1:]
 options = "d"
 long_options = ["dry-run"]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-d", "--dry-run", help = "Dry run, only list files & models", action = "store_true")
+parser.add_argument("-m", "--all-models", help = "Select all models", action = "store_true")
+parser.add_argument("-f", "--all-files", help = "Select all files", action = "store_true")
 args = parser.parse_args()
 
 chat_client, loader = get_ollama_clients()
@@ -140,17 +155,40 @@ results = {}
 def main() -> int:
     
     models = get_available_models()
-    print("########")
-    print("Available model(s):")
-    for i in range(len(models)):
-        print("    [" + str(i) + "] " + models[i]['name'])
-    
     files = get_list_of_files()
-    print("\n########")
-    print("File(s) to be considered:")
-    for i in range(len(files)):
-        print("    [" + str(i) + "] " + files[i]['path'].name + " (SHA256: " + files[i]['hash'] + ")")
-    
+
+    print("########")
+    pynvml_init()
+
+    if args.dry_run:
+        print("Dry run mode...\n")
+
+    if (args.all_files and args.all_models) or args.dry_run:
+        print("########")
+        print("Available model(s):")
+        for i in range(len(models)):
+            print("    [" + str(i) + "] " + models[i]['name'])
+
+        print("\n########")
+        print("File(s) to be considered:")
+        for i in range(len(files)):
+            print("    [" + str(i) + "] " + files[i]['path'].name + " (SHA256: " + files[i]['hash'] + ")")
+        print()
+
+    if not args.all_models and not args.dry_run:
+        selected_models = questionary.checkbox(
+            "Select models:",
+            choices=[model['model'] for model in models],
+        ).ask()
+        models = [model for model in models if model['model'] in selected_models]
+
+    if not args.all_files and not args.dry_run:
+        selected_files = questionary.checkbox(
+            "Select files:",
+            choices=[file['path'].name for file in files],
+        ).ask()
+        files = [file for file in files if file['path'].name in selected_files]
+
     if args.dry_run:
         sys.exit(1)
     
