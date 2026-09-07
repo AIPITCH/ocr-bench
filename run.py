@@ -12,6 +12,8 @@ import questionary
 from httpx import TimeoutException
 from hashlib import sha256
 from pynvml import *
+from tqdm import trange
+import pymupdf
 
 
 #### parameters
@@ -45,7 +47,7 @@ Return one object per text line in an array in a wrapping top-level object:
 DO NOT PREFIX the answer with the text "json"!
 """
 samples_dir = "~/git/ocr-bench/samples/"
-image_extensions = ['.png', '.jpg', '.jpeg']
+image_extensions = ['.png', '.jpg', '.jpeg', '.pdf']
 
 
 #### function definitions
@@ -91,11 +93,10 @@ def list_models(models: list) -> None:
         print("    [" + str(i) + "] " + models[i]['name'])
 
 
-def get_list_of_files() -> list:
+def get_list_of_files(samples_dir: str, image_extensions: list) -> list:
     samples_path = Path(samples_dir)
     samples_path = samples_path.expanduser()
     
-    # get list of jpeg and png files
     files = [
         { 'path': path, 'hash': sha256(path.read_bytes()).hexdigest() }
         for path in samples_path.glob('*')
@@ -113,6 +114,25 @@ def get_list_of_files() -> list:
 def list_files(files: list) -> None:
     for i in range(len(files)):
         print("    [" + str(i) + "] " + files[i]['path'].name + " (SHA256: " + files[i]['hash'] + ")")
+
+
+def convert_pdfs(files: list) -> list:
+    print("Converting PDFs ...")
+    zoom_x = 2.0
+    zoom_y = 2.0
+    mat = pymupdf.Matrix(zoom_x, zoom_y)
+
+    pdfs = [file for file in files if file['path'].suffix.lower() in ['.pdf']]
+    for file in pdfs:
+        doc = list(pymupdf.open(file['path']))
+
+        for _ in trange(len(doc), desc="Processing {} ".format(file['path'].name)):
+            page = doc.pop(0)
+            pix = page.get_pixmap(matrix=mat)
+            pix.save("{}-{:04d}.png".format(file['path'], page.number))
+
+    print('done')
+    return get_list_of_files(samples_dir, ['.png', '.jpg', '.jpeg'])
 
 
 def get_ollama_clients() -> list:
@@ -184,7 +204,7 @@ def main() -> int:
 
     version = get_ollama_version()
     models = get_available_models()
-    files = get_list_of_files()
+    files = get_list_of_files(samples_dir, image_extensions)
 
     print("########")
     print("Ollama version: {}".format(version))
@@ -225,6 +245,8 @@ def main() -> int:
 
     if args.dry_run:
         sys.exit(1)
+
+    files = convert_pdfs(files)
     
     results["files"] = [
         { 'filename': file['path'].name, 'filepath': str(file['path'].parents[0]), 'filehash': file['hash'] }

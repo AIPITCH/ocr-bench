@@ -2,3 +2,5 @@ ollama
 requests
 nvidia-ml-py
 questionary
+pymupdf
+tqdm
