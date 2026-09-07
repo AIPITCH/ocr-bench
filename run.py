@@ -49,6 +49,22 @@ image_extensions = ['.png', '.jpg', '.jpeg']
 
 
 #### function definitions
+def get_ollama_version() -> str:
+    try:
+        response = requests.get(ollama_url + "/api/version")
+    except requests.ConnectionError as e:
+        print("Can't connect to Ollama instance!")
+        sys.exit(1)
+
+    if response.status_code != 200:
+        print("\nCannot version from Ollama server, exiting...")
+        sys.exit(1)
+
+    version = response.json()['version']
+
+    return version
+
+
 def get_available_models() -> list:
     # get list of models
     try:
@@ -70,6 +86,11 @@ def get_available_models() -> list:
     return models
 
 
+def list_models(models: list) -> None:
+    for i in range(len(models)):
+        print("    [" + str(i) + "] " + models[i]['name'])
+
+
 def get_list_of_files() -> list:
     samples_path = Path(samples_dir)
     samples_path = samples_path.expanduser()
@@ -89,6 +110,11 @@ def get_list_of_files() -> list:
     return files
 
 
+def list_files(files: list) -> None:
+    for i in range(len(files)):
+        print("    [" + str(i) + "] " + files[i]['path'].name + " (SHA256: " + files[i]['hash'] + ")")
+
+
 def get_ollama_clients() -> list:
     return [
             Client(
@@ -102,7 +128,7 @@ def get_ollama_clients() -> list:
     ]
 
 
-def unload_models(model_to_keep, loader) -> None:
+def unload_models(model_to_keep: str, loader: Client) -> None:
     # use empty string in model_to_keep to unload all models
     ps = loader.ps()
     already_found = False
@@ -114,7 +140,7 @@ def unload_models(model_to_keep, loader) -> None:
             already_found = True
 
 
-def load_model(model_name, loader) -> int:
+def load_model(model_name: str, loader: Client) -> int:
     loader.generate(model = model_name, prompt = "")
     ps = loader.ps()
     return ps['models'][0].size_vram
@@ -130,12 +156,14 @@ def write_results() -> None:
 
 def pynvml_init() -> None:
     nvmlInit()
-    print(f"Driver Version: {nvmlSystemGetDriverVersion()}")
+    print("Nvidia driver Version: {}".format(nvmlSystemGetDriverVersion()))
     print("Available device(s):")
     deviceCount = nvmlDeviceGetCount()
     for i in range(deviceCount):
         handle = nvmlDeviceGetHandleByIndex(i)
-        print(f"\tDevice {i} : {nvmlDeviceGetName(handle)}")
+        handle = nvmlDeviceGetHandleByIndex(i)
+        info = nvmlDeviceGetMemoryInfo(handle)
+        print('\tDevice {} : {} /Total mem: {:.2f}GB /Used mem: {:.2f}GB /Free mem: {:.2f}GB'.format(i, nvmlDeviceGetName(handle), info.total/pow(1024,3), info.used/pow(1024,3), info.free/pow(1024,3)))
     print()
 
 
@@ -153,11 +181,13 @@ chat_client, loader = get_ollama_clients()
 
 results = {}
 def main() -> int:
-    
+
+    version = get_ollama_version()
     models = get_available_models()
     files = get_list_of_files()
 
     print("########")
+    print("Ollama version: {}".format(version))
     pynvml_init()
 
     if args.dry_run:
@@ -166,13 +196,11 @@ def main() -> int:
     if (args.all_files and args.all_models) or args.dry_run:
         print("########")
         print("Available model(s):")
-        for i in range(len(models)):
-            print("    [" + str(i) + "] " + models[i]['name'])
+        list_models(models)
 
         print("\n########")
         print("File(s) to be considered:")
-        for i in range(len(files)):
-            print("    [" + str(i) + "] " + files[i]['path'].name + " (SHA256: " + files[i]['hash'] + ")")
+        list_files(files)
         print()
 
     if not args.all_models and not args.dry_run:
