@@ -14,6 +14,7 @@ from hashlib import sha256
 from pynvml import *
 from tqdm import trange
 import pymupdf
+from PIL import Image, ImageDraw
 
 
 #### parameters
@@ -206,6 +207,23 @@ def pynvml_init() -> None:
     print()
 
 
+def draw_bboxes(file: Path, model_name: str, bboxes: list) -> None:
+    img = Image.open(file['path']).convert("RGB")
+    width, height = img.size
+    draw = ImageDraw.Draw(img)
+
+    for bbox in bboxes:
+        left, top, right, bottom = bbox
+        bbox = [
+            round(left * width / 999),
+            round(top * height / 999),
+            round(right * width / 999),
+            round(bottom * height / 999),
+        ]
+        draw.rectangle(bbox, outline="red", width=1)
+    img.save("{}_{}_bboxes.png".format(file['path'], model_name))
+
+
 args = sys.argv[1:]
 options = "d"
 long_options = ["dry-run"]
@@ -310,7 +328,16 @@ def main() -> int:
             print("Time spent: ", time_spent)
             current_result['time_spent'] = time_spent.total_seconds()
             if current_result['status'] == 'ok':
-                current_result['model_response'] = response.message.content
+                try:
+                    json_response = json.loads(response.message.content)
+                    current_result['model_response'] = json_response
+                    items = json_response['items']
+                    model_response_bboxes = [ item['bbox'] for item in items ]
+                    draw_bboxes(file, model_name, model_response_bboxes)
+                except:
+                    print("Badly formatted JSON response, can't draw bounding boxes")
+                    current_result['model_response'] = response.message.content
+
             results['results'].append(current_result)
     
     # unload all running models
