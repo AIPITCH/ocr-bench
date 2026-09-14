@@ -52,6 +52,7 @@ Return one object per text line in an array in a wrapping top-level object:
 }
 """
 samples_dir = "~/git/ocr-bench/samples/"
+run_results_dir = "run_results"
 image_extensions = ['.png', '.jpg', '.jpeg', '.pdf']
 pdf_zoom_factor = 2.0
 
@@ -175,12 +176,15 @@ def load_model(model_name: str, loader: Client) -> int:
     return ps['models'][0].size_vram
 
 
-def write_results() -> None:
-    ts = datetime.datetime.now().strftime('%s')
-    filename = "run_results_" + ts + ".json"
-    with open(filename, "w") as results_file:
-        results_file.write(json.dumps(results))
-    print("\nRun results written to " + filename)
+def write_results(results: dict) -> None:
+    if len(results) != 0:
+        ts = datetime.datetime.now().strftime('%s')
+        filename = "run_results_" + ts + ".json"
+        with open(run_results_dir + '/' + filename, "w") as results_file:
+            results_file.write(json.dumps(results))
+        print("\nRun results written to " + run_results_dir + '/' + filename)
+    else:
+        print("\nNo results to save")
 
 
 def pynvml_init() -> None:
@@ -306,7 +310,7 @@ def main() -> int:
     # unload all running models
     unload_models("", loader)
     
-    write_results()
+    write_results(results)
     return 0
 
 
@@ -314,7 +318,7 @@ if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
-        write_results()
+        write_results(results)
         unload_models("", loader)
         print('Interrupted!')
         sys.exit(1)
