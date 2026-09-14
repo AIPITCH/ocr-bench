@@ -26,12 +26,18 @@ Return ONLY valid JSON. No Markdown and no explanation.
 
 Coordinate system:
 - bbox format: [x_min, y_min, x_max, y_max]
-- coordinates are integers normalized from 0 to 1000
+- coordinates are integers normalized from 0 to 999
 - origin [0, 0] is the image top-left
-- [1000, 1000] is the image bottom-right
+- [999, 999] is the image bottom-right
 - each bbox must tightly cover the visible text
-- enforce: 0 <= x_min < x_max <= 1000
-- enforce: 0 <= y_min < y_max <= 1000
+- enforce: 0 <= x_min < x_max <= 999
+- enforce: 0 <= y_min < y_max <= 999
+
+Return exactly one valid JSON object.
+
+The first output character MUST be `{`.
+The last output character MUST be `}`.
+Do not write `json`, ```json, backticks, Markdown, headings, explanations, labels, or any text before or after the object.
 
 Return one object per text line in an array in a wrapping top-level object:
 {
@@ -44,7 +50,6 @@ Return one object per text line in an array in a wrapping top-level object:
     }
   ]
 }
-DO NOT PREFIX the answer with the text "json"!
 """
 samples_dir = "~/git/ocr-bench/samples/"
 image_extensions = ['.png', '.jpg', '.jpeg', '.pdf']
