@@ -124,12 +124,17 @@ def list_files(files: list) -> None:
 
 
 def convert_pdfs(files: list, zoom_factor: int) -> list:
-    print("Converting PDFs ...")
     zoom_x = zoom_factor
     zoom_y = zoom_x
     mat = pymupdf.Matrix(zoom_x, zoom_y)
 
     pdfs = [file for file in files if file['path'].suffix.lower() in ['.pdf']]
+
+    if not pdfs:
+        return files
+
+    print("Converting PDFs ...")
+
     for pdf in pdfs:
         doc = list(pymupdf.open(pdf['path']))
 
