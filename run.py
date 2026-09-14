@@ -56,6 +56,7 @@ run_results_dir = "run_results"
 image_extensions = ['.png', '.jpg', '.jpeg', '.pdf']
 pdf_zoom_factor = 2.0
 
+
 #### function definitions
 def get_ollama_version() -> str:
     try:
@@ -164,7 +165,7 @@ def unload_models(model_to_keep: str, loader: Client) -> None:
     already_found = False
     for i in ps.models:
         if i['name'] != model_to_keep or already_found:
-            print('Unloading ' + i['name'])
+            print('Unloading ' + i['name'] + " (if unused)")
             loader.generate(model = i['name'], prompt = "", keep_alive = 0)
         else:
             already_found = True
@@ -270,7 +271,7 @@ def main() -> int:
     results["results"] = []
     for model in models:
         model_name = model['model']
-        unload_models(model_name,loader)
+        unload_models(model_name, loader)
         sys.stdout.write("\nLoading " + model_name + " ...")
         vram_usage = load_model(model_name, loader)
         print("done")
