@@ -297,14 +297,15 @@ def main() -> int:
         unload_models(model_name, loader)
         sys.stdout.write("\nLoading " + model_name + " ...")
         vram_usage = load_model(model_name, loader)
+        model_begin_time = datetime.datetime.now()
         print("done")
         for file in files:
             current_result = {'model': model_name, 'vram_usage': vram_usage, 'file': file['path'].name}
             print("Processing " + file['path'].name + " with " + model_name)
             
             current_result['status'] = 'ok'
-            begin = datetime.datetime.now()
-            current_result['start_time'] = begin.strftime('%Y/%m/%d %H:%M:%S.%f')
+            image_begin_time = datetime.datetime.now()
+            current_result['start_time'] = image_begin_time.strftime('%Y/%m/%d %H:%M:%S.%f')
             try:
                 response = chat_client.chat(
                     model = model_name,
@@ -324,9 +325,9 @@ def main() -> int:
                 current_result['status'] = 'error'
                 current_result['error_message'] = repr(e)
     
-            time_spent = datetime.datetime.now() - begin
-            print("Time spent: ", time_spent)
-            current_result['time_spent'] = time_spent.total_seconds()
+            image_time_spent = datetime.datetime.now() - image_begin_time
+            print("Time spent on this image: ", image_time_spent)
+            current_result['image_time_spent'] = image_time_spent.total_seconds()
             if current_result['status'] == 'ok':
                 try:
                     json_response = json.loads(response.message.content)
@@ -339,6 +340,9 @@ def main() -> int:
                     current_result['model_response'] = response.message.content
 
             results['results'].append(current_result)
+        model_time_spent = datetime.datetime.now() - model_begin_time
+        print("Time spent running this model: ", model_time_spent)
+        model['time_spent'] = model_time_spent.total_seconds()
     
     # unload all running models
     unload_models("", loader)
