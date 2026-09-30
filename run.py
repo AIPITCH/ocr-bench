@@ -179,10 +179,12 @@ def unload_models(model_to_keep: str, loader: Client) -> None:
             already_found = True
 
 
-def load_model(model_name: str, loader: Client) -> int:
+def load_model(model_name: str, loader: Client) -> (datetime.datetime, int):
+    model_load_begin_time = datetime.datetime.now()
     loader.generate(model = model_name, prompt = "")
+    model_load_time_spent = datetime.datetime.now() - model_load_begin_time
     ps = loader.ps()
-    return ps['models'][0].size_vram
+    return model_load_time_spent, ps['models'][0].size_vram
 
 
 def write_results(results: dict) -> None:
@@ -223,7 +225,7 @@ def draw_bboxes(file: Path, model_name: str, bboxes: list) -> None:
             round(bottom * height / 999),
         ]
         draw.rectangle(bbox, outline="red", width=1)
-    img.save("{}_{}_bboxes.png".format(file['path'], model_name))
+    img.save("{}/bboxes/{}_{}_bboxes.png".format(run_results_dir, file['path'].name, model_name))
 
 
 args = sys.argv[1:]
@@ -298,9 +300,10 @@ def main() -> int:
         model_name = model['model']
         unload_models(model_name, loader)
         sys.stdout.write("\nLoading " + model_name + " ...")
-        vram_usage = load_model(model_name, loader)
+        model_load_time_spent, vram_usage = load_model(model_name, loader)
+        sys.stdout.write("done")
+        sys.stdout.write("\n{} loaded in {}\n".format(model_name, model_load_time_spent))
         model_begin_time = datetime.datetime.now()
-        print("done")
         for file in files:
             current_result = {'model': model_name, 'vram_usage': vram_usage, 'file': file['path'].name}
             print("Processing " + file['path'].name + " with " + model_name)
@@ -344,7 +347,8 @@ def main() -> int:
             results['results'].append(current_result)
         model_time_spent = datetime.datetime.now() - model_begin_time
         print("Time spent running this model: ", model_time_spent)
-        model['time_spent'] = model_time_spent.total_seconds()
+        model['run_time_spent'] = model_time_spent.total_seconds()
+        model['load_time_spent'] = model_load_time_spent.total_seconds()
     
     # unload all running models
     unload_models("", loader)
