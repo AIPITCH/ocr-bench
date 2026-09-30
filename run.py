@@ -32,10 +32,11 @@ Return ONLY valid JSON. No Markdown and no explanation.
 
 Coordinate system:
 - bbox format: [x_min, y_min, x_max, y_max]
+- polygon format: [[x_1, y_1], [x_2, y_2], [x_3, y_3], [x_4, y_4], ...]
 - coordinates are integers normalized from 0 to 999
 - origin [0, 0] is the image top-left
 - [999, 999] is the image bottom-right
-- each bbox must tightly cover the visible text
+- each bbox or polygon must tightly cover the visible text
 - enforce: 0 <= x_min < x_max <= 999
 - enforce: 0 <= y_min < y_max <= 999
 
@@ -52,6 +53,7 @@ Return one object per text line in an array in a wrapping top-level object:
       "id": "line_001",
       "text": "Reproduce all visible text and special characters exactly as written, preserving line breaks and any tabular structure, without summarizing, translating, or interpreting the content. Prefix watermarked text including special characters with [WATERMARK]",
       "bbox": [x_min, y_min, x_max, y_max],
+      "polygon": [[x_1, y_1], [x_2, y_2], [x_3, y_3], ...],
       "confidence": 0.0
     }
   ]
