@@ -18,6 +18,11 @@ from PIL import Image, ImageDraw
 
 
 #### parameters
+samples_dir = "samples/"
+run_results_dir = "run_results/"
+image_extensions = ['.png', '.jpg', '.jpeg', '.pdf']
+pdf_zoom_factor = 2.0
+
 ollama_url = "http://localhost:11434"
 ollama_timeout = 240
 ollama_loader_timeout = 120
@@ -52,11 +57,6 @@ Return one object per text line in an array in a wrapping top-level object:
   ]
 }
 """
-samples_dir = "~/git/ocr-bench/samples/"
-run_results_dir = "run_results"
-image_extensions = ['.png', '.jpg', '.jpeg', '.pdf']
-pdf_zoom_factor = 2.0
-
 
 #### function definitions
 def get_ollama_version() -> str:
