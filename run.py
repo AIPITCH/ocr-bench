@@ -211,23 +211,6 @@ def pynvml_init() -> None:
     print()
 
 
-def draw_bboxes(file: Path, model_name: str, bboxes: list) -> None:
-    img = Image.open(file['path']).convert("RGB")
-    width, height = img.size
-    draw = ImageDraw.Draw(img)
-
-    for bbox in bboxes:
-        left, top, right, bottom = bbox
-        bbox = [
-            round(left * width / 999),
-            round(top * height / 999),
-            round(right * width / 999),
-            round(bottom * height / 999),
-        ]
-        draw.rectangle(bbox, outline="red", width=1)
-    img.save("{}/bboxes/{}_{}_bboxes.png".format(run_results_dir, file['path'].name, model_name))
-
-
 args = sys.argv[1:]
 options = "d"
 long_options = ["dry-run"]
@@ -333,18 +316,8 @@ def main() -> int:
             image_time_spent = datetime.datetime.now() - image_begin_time
             print("Time spent on this image: ", image_time_spent)
             current_result['image_time_spent'] = image_time_spent.total_seconds()
-            if current_result['status'] == 'ok':
-                try:
-                    json_response = json.loads(response.message.content)
-                    current_result['model_response'] = json_response
-                    items = json_response['items']
-                    model_response_bboxes = [ item['bbox'] for item in items ]
-                    draw_bboxes(file, model_name, model_response_bboxes)
-                except:
-                    print("Badly formatted JSON response, can't draw bounding boxes")
-                    current_result['model_response'] = response.message.content
-
             results['results'].append(current_result)
+
         model_time_spent = datetime.datetime.now() - model_begin_time
         print("Time spent running this model: ", model_time_spent)
         model['run_time_spent'] = model_time_spent.total_seconds()
