@@ -18,8 +18,8 @@ from PIL import Image, ImageDraw
 
 
 #### parameters
-samples_dir = "samples/"
-run_results_dir = "run_results/"
+samples_dir = "samples"
+run_results_dir = "run_results"
 image_extensions = ['.png', '.jpg', '.jpeg', '.pdf']
 pdf_zoom_factor = 2.0
 
@@ -190,10 +190,10 @@ def load_model(model_name: str, loader: Client) -> (datetime.datetime, int):
 def write_results(results: dict) -> None:
     if len(results) != 0:
         ts = datetime.datetime.now().strftime('%s')
-        filename = "run_results_" + ts + ".json"
-        with open(run_results_dir + '/' + filename, "w") as results_file:
+        filename = "{}_run_results.json".format(ts)
+        with open("{}/{}".format(run_results_dir, filename), "w") as results_file:
             results_file.write(json.dumps(results))
-        print("\nRun results written to " + run_results_dir + '/' + filename)
+        print("\nRun results written to {}/{}".format(run_results_dir, filename))
     else:
         print("\nNo results to save")
 
