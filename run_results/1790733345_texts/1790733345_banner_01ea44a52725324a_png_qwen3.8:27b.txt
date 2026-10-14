@@ -1,0 +1,15 @@
+BERLING
+P Promenade
+P Opéra
+Rapperswil Forch
+Zoo Uni-Spital
+Kunsthaus Zürich
+Bierling
+Promenade
+Opéra
+Rapperswil
+Forch
+Zoo
+Uni-Spital
+Rathaus
+Schulhaus

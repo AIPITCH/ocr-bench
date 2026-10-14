@@ -1,0 +1,365 @@
+FRONT-PAGE
+C
+Ollie Swap
+— Anonymous Tor-only swap for BTC, BCH, DASH, LTC, XMR — no accounts, own liquidity, PGP-verified operator identity.
+→
+[ HEADLINE SPONSORS · 5/5 SLOTS FILLED ]
+Paid placement, editorial firewall.
+How it works →
+Xeovo VPN
+A
+HEADLINE
+Silence censorship. Protect your privacy and bypass
+restrictions with Xeovo VPN. No email required.
+Trocador
+A
+HEADLINE
+Long-running no-KYC
+aggregator. XMR-friendly, Tor
+mirror, broad coin support.
+Cake Wallet
+A
+HEADLINE
+Mobile + desktop multi-coin
+wallet (XMR, BTC, LTC, ETH)
+with in-app swap + CakePay.
+El Capo
+A
+HEADLINE
+Monero-first private exchange ·
+no KYC, no logs · no records
+after 30 days. Tor-native with
+published onion mi
+CCE.Cash
+B
+HEADLINE
+Non-custodial cross-chain
+swap router with refund-on-
+refusal AML policy and multi-
+destination split swaps. No
+[ BROWSE · 17 CATEGORIES · 308 ENTRIES ]
+All categories.
+NO-KYC · A-grade 136
+audited
+accepts cash
+XMR-native
+tor mirror 88
+no-JS
+open-source
+lightning
+64 entries
+Exchanges
+No-KYC swap services and aggregators.
+Crypto-to-crypto, no ID, no signup.
+/exchanges →
+2 entries
+Marketplaces
+P2P marketplaces where XMR is a first-
+class payment rail — goods, services,
+classifieds.
+/marketplaces →
+32 entries
+Wallets
+Self-custodial wallets across XMR, BTC,
+Lightning, multi-chain.
+/wallets →
+13 entries
+VPNs
+No-logs VPNs that accept crypto.
+Independent audits weighted heavily.
+/vpns →
+7 entries
+Mixers / CoinJoin
+On-chain privacy tooling — CoinJoin
+coordinators, atomic-swap bridges.
+/mixers →
+16 entries
+Cards
+Prepaid & virtual debit cards funded with
+crypto. EU + US + global.
+/cards →
+10 entries
+Email · Domains
+Anonymous email + DNS + masked-alias
+providers. PGP friendly.
+/email →
+10 entries
+SIM · eSIM
+Mobile data without identity attached.
+eSIM and physical SIM.
+/sims →
+16 entries
+Hosting
+VPS, dedicated, and Tor-friendly hosts
+that accept crypto for invoices.
+/hosting →
+9 entries
+Search
+Search engines that don't profile, log
+queries, or sell behavioral data.
+/search-engines →
+12 entries
+AI · LLMs
+LLMs without surveillance — local, TEE-
+hosted, crypto-paid proxies.
+/ai →
+59 entries
+Tools
+Browsers, password managers, hardware.
+The adjacent kit.
+/tools →
+9 entries
+Forums · Community
+Tor-friendly discussion venues and
+Monero community rooms.
+/forums →
+19 entries
+Educational
+Books, podcasts, courses, newsletters —
+Monero-first canon.
+/educational →
+21 entries
+Nodes
+Operator-published Monero remote
+nodes for light wallets.
+/nodes →
+4 entries
+Wagering
+No-KYC crypto wagering — casinos
+(RNG) + peer prediction markets.
+/wagering →
+5 entries
+Media
+Independent Monero-focused podcasts,
+newsletters, and media properties. Facts,
+not fluff.
+/media →
+xmr.club
+categories ▾
+browse
+picks
+guides
+who
+methodology
+incidents
+⌘K search
+EN · 中文 · ES · RU
+sponsor →
+xmr.club
+ONION MIRROR
+Independent directory of no-KYC Monero services. Manual testing,
+http://xmrclubummbi7y3nmmwvdxvh6rrpuvids1lmj2nt
+public rubric, editorial firewall.
+d5wybggyixskaad.onion
+BROWSE
+MORE
+LISTS
+READ
+DO
+DATA / SOCIAL
+cards
+educational
+picks
+about
+ask
+@xmr_club
+wallets
+hosting
+incidents
+guides
+search
+telegram
+vpns
+search
+shamelist
+#OPSEC52
+sponsor
+channel
+mixers
+ai
+freshness
+methodology
+submit
+sitemap.xml
+email
+forums
+tenure
+transparency
+donate
+atom
+sims
+nodes
+onion mirrors
+glossary
+contact
+json feed
+exchanges
+wagering
+onion-audit
+colophon
+press
+data.json
+tools
+tags
+status
+history
+random
+llms.txt
+tree
+audit log
+heroes
+compare
+api/v1/home
+new
+peers
+now
+stack
+trends
+content gaps
+archive
+CC-BY-4.0 · content + grades · code MIT · no trackers · no cookies · no JS required
+FRONT-PAGE
+Olle Swap — Anonymous Tor-only swap for BTC, BCH, DASH, LTC, XMR — no accounts, own liquidity, PGP-verified operator identity.
+[ HEADLINE SPONSORS · 5/5 SLOTS FILLED ]
+Paid placement, editorial firewall.
+How it works →
+Xevo VPN
+Silence censorship. Protect your privacy and bypass restrictions with Xevo VPN. No email required.
+Trocador
+Long-running no-KYC aggregator. XMR-friendly. Tor mirror, broad coin support.
+Cake Wallet
+Mobile + desktop multi-coin wallet (XMR, BTC, LTC, ETH) with in-app swap + CakePay.
+El Capo
+Monero-first private exchange - no KYC, no logs - no records after 30 days. Tor-native with published onion mi
+CCE.Cash
+Non-custodial cross-chain swap router with refund-on-refusal AML policy and multi-destination split swaps. No
+BROWSE · 17 CATEGORIES · 308 ENTRIES
+All categories.
+NO-KYC · A-grade
+audited
+accepts cash
+XMR-native
+tor mirror
+no-JS
+open-source
+lightning
+Exchanges
+No-KYC swap services and aggregators. Crypto-to-crypto, no ID, no signup.
+/exchanges
+Marketplaces
+P2P marketplaces where XMR is a first-class payment rail — goods, services, classifieds.
+/marketplaces
+Wallets
+Self-custodial wallets across XMR, BTC, Lightning, multi-chain.
+/wallets
+VPNs
+No-logs VPNs that accept crypto. Independent audits weighted heavily.
+/vns
+Mixers / CoinJoin
+On-chain privacy tooling — CoinJoin coordinators, atomic-swap bridges.
+/mixers
+Cards
+Prepaid & virtual debit cards funded with crypto. EU + US + global.
+/cards
+Email · Domains
+Anonymous email + DNS + masked-alias providers. PGP friendly.
+/email
+SIM · eSIM
+Mobile data without identity attached. eSIM and physical SIM.
+/sims
+Hosting
+VPS, dedicated, and Tor-friendly hosts that accept crypto for invoices.
+/hosting
+Search
+Search engines that don't profile, log queries, or sell behavioral data.
+/search-engines
+AI · LLMs
+LLMs without surveillance — local, TEE-hosted, crypto-paid proxies.
+/ai
+Tools
+Browsers, password managers, hardware. The adjacent kit.
+/tools
+Forums · Community
+Tor-friendly discussion venues and Monero community rooms.
+/forums
+Educational
+Books, podcasts, courses, newsletters — Monero-first canon.
+/educational
+Nodes
+Operator-published Monero remote nodes for light wallets.
+/nodes
+Wagering
+No-KYC crypto wagering — casinos (RNG) + peer prediction markets.
+/wagering
+Media
+Independent Monero-focused podcasts, newsletters, and media properties. Facts, not fluff.
+/media
+xmr.club
+Independent directory of no-KYC Monero services. Manual testing, public rubric, editorial firewall.
+BROWSE
+cards
+wallets
+vpns
+mixers
+email
+sims
+exchanges
+tools
+MORE
+educational
+hosting
+search
+ai
+forums
+nodes
+wagering
+tags
+tree
+LISTS
+picks
+incidents
+shameless
+freshness
+tenure
+onion mirrors
+onion-audit
+status
+audit log
+new
+now
+trends
+content gaps
+archive
+READ
+about
+guides
+#OPSEC52
+methodology
+transparency
+glossary
+colophon
+history
+heroes
+peers
+stack
+DO
+ask
+search
+sponsor
+submit
+donate
+contact
+press
+random
+compare
+DATA / SOCIAL
+@xmr_club
+telegram
+channel
+sitemap.xml
+atom
+json feed
+data.json
+lims.txt
+api/v1/home
+CC-BY-4.0 · content + grades · code MIT · no trackers · no cookies · no JS required
