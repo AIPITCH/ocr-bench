@@ -69,7 +69,7 @@ for result in data['results']:
             fulltext += item['text']+"\n"
 
         [image_file] = ([
-            Path("{}/{}".format(file['filepath'], file['filename'])).name.replace('.','_') for file in data['files']
+            Path("{}/{}".format(file['filepath'], file['filename'])).name for file in data['files']
                 if result['file'] in [file.name for file in selected_files]
                 and result['file'] == file['filename']
         ])

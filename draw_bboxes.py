@@ -41,7 +41,7 @@ def draw_bboxes(file: Path | str, model_name: str, bboxes: list) -> None:
             round(bottom * height / 999),
         ] 
         draw.rectangle(bbox, outline="red", width=1)
-    img.save("{}/{}_{}_{}_bboxes.png".format(output_dir, result_id, file.name.replace('.', '_'), model_name))
+    img.save("{}/{}_{}_{}_bboxes.png".format(output_dir, result_id, file.name, model_name))
 
 with open(result_file, "r") as f:
     data = json.load(f)
