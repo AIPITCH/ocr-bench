@@ -316,6 +316,16 @@ def main() -> int:
             image_time_spent = datetime.datetime.now() - image_begin_time
             print("Time spent on this image: ", image_time_spent)
             current_result['image_time_spent'] = image_time_spent.total_seconds()
+            if current_result['status'] == 'ok':
+                try:
+                    json_response = json.loads(response.message.content)
+                    current_result['model_response'] = json_response
+                    items = json_response['items']
+                    model_response_bboxes = [ item['bbox'] for item in items ]
+                except:
+                    print("Badly formatted JSON response")
+                    current_result['model_response'] = response.message.content
+
             results['results'].append(current_result)
 
         model_time_spent = datetime.datetime.now() - model_begin_time
