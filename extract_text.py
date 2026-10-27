@@ -31,6 +31,8 @@ with open(result_file, "r") as f:
 
 result_id = re.search(r"^(\d+)_run_results\.json", result_file.name).group(1)
 
+selected_models = []
+
 if args.model == 'select':
     available_models = [model['name'] for model in data['models']]
     selected_models = questionary.checkbox(
@@ -54,19 +56,9 @@ elif args.image_file == 'all':
 else:
     selected_files = [Path(args.image_file)]
 
-fulltext=""
 for result in data['results']:
     if (result['file'] in [file.name for file in selected_files] or args.image_file == 'all') and ( args.model == result['model'] or args.model == 'all' or result['model'] in selected_models):
         sys.stderr.write("Processing {} output... ".format(result['model']))
-
-        try:
-            items = result['model_response']['items']
-        except:
-            sys.stderr.write("No result found for model {} on this file\n\n".format(result['model']))
-            continue
-        sys.stderr.write("Processing {} output... ".format(result['model']))
-        for item in items:
-            fulltext += item['text']+"\n"
 
         [image_file] = ([
             Path("{}/{}".format(file['filepath'], file['filename'])).name for file in data['files']
@@ -74,9 +66,21 @@ for result in data['results']:
                 and result['file'] == file['filename']
         ])
 
+        if result['status'] != 'ok':
+            sys.stderr.write("Result not available for image {} (status: {}), skipping...\n".format(image_file, result['status']))
+            continue
+
+        fulltext=""
+        if type(result['model_response']) is str:
+            fulltext = result['model_response']
+        else:
+            items = result['model_response']['items']
+            for item in items:
+                fulltext += item['text']+"\n"
+
         filename = "{}_{}_{}.txt".format(result_id, image_file, result['model'])
         with open(output_dir + '/' + filename, "w") as fulltext_file:
             fulltext_file.write(fulltext)
 
-        sys.stderr.write("done ({})\n\n".format(output_dir + '/' + filename))
+        sys.stderr.write("done ({})\n".format(output_dir + '/' + filename))
 

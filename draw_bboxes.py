@@ -73,21 +73,25 @@ else:
 
 for result in data['results']:
     if (result['file'] in [file.name for file in selected_files] or args.image_file == 'all') and ( args.model == result['model'] or args.model == 'all' or result['model'] in selected_models):
-        sys.stderr.write("Processing {} output... ".format(result['model']))
 
-        try:
-            items = result['model_response']['items']
-        except:
-            sys.stderr.write("No valid result found for model {} in this result file\n\n".format(result['model']))
-            continue
-        sys.stderr.write("Processing {} output... ".format(result['model']))
-
-        model_response_bboxes = [ item['bbox'] for item in items ]
         [image_file] = ([
             Path("{}/{}".format(file['filepath'], file['filename'])) for file in data['files']
                 if result['file'] in [file.name for file in selected_files]
                 and result['file'] == file['filename']
         ])
+
+        if result['status'] != 'ok':
+            sys.stderr.write("Result not available for image {} (status: {}), skipping...\n".format(image_file, result['status']))
+            continue
+
+        try:
+            items = result['model_response']['items']
+        except:
+            sys.stderr.write("No valid result found for model {} in this result file\n".format(result['model']))
+            continue
+        sys.stderr.write("Processing {} output... ".format(result['model']))
+
+        model_response_bboxes = [ item['bbox'] for item in items ]
         draw_bboxes(image_file, result['model'], model_response_bboxes)
-        sys.stderr.write("done\n\n")
+        sys.stderr.write("done\n")
 
